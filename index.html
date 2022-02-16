@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Basic DOM Manipulation</title>
+        <style>
+            body {
+                width: 50%;
+                padding: 1% 5%;
+            }
+            ul {
+                list-style: none;
+                padding: 0px;
+                margin: 0px;
+            }
+            li {
+                display: flex;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="header">Basic DOM Manipulation</h1>
+        <p>
+            The document currently loaded in each one of your browser tabs is represented by a document object model. 
+            This is a "tree structure" representation created by the browser that enables the HTML structure to be easily accessed by programming languages — for example the browser itself uses it to apply styling and other information to the correct elements as it renders a page, and developers like you can manipulate the DOM with JavaScript after the page has been rendered.
+        </p>
+
+        <button onclick="onChangeHeader()">Change Header Style</button>
+        <ul>
+            <li><input type="radio" name="header-style" value="h1" checked><h1>Heading 1</h1></li>
+            <li><input type="radio" name="header-style" value="h2"><h2>Heading 2</h2></li>
+            <li><input type="radio" name="header-style" value="h3"><h3>Heading 3</h3></li>
+        </ul>
+
+        <button id="change-color">Change Header Color</button>
+        <input type="radio" name="color" value="red" checked><span>Red</span>
+        <input type="radio" name="color" value="green"><span>Green</span>
+        <input type="radio" name="color" value="blue"><span>Blue</span>
+
+        <br>
+        <span>Text Size</span><input id="font-size" type="range" min="12" max="54"/><span id="size">12px</span>
+    </body>
+    <script>
+        function onChangeHeader () {
+            console.log("clicked!")
+
+            let headerStyle = document.getElementsByName("header-style") // HTML Collections []
+            let value
+            for (let element of headerStyle) {
+                if (element.checked) {
+                    value = element.value
+                }
+            }
+
+            let header = document.getElementById("header")
+            let newHeader = document.createElement(`${value}`) // <h1></h1>
+            newHeader.innerHTML = header.innerHTML
+            newHeader.id = header.id
+
+            header.parentNode.replaceChild(newHeader, header)
+        }
+
+        let button = document.getElementById("change-color")
+        button.addEventListener("click", function () {
+            let color = document.getElementsByName("color")
+            let value
+            for (let element of color) {
+                if (element.checked) {
+                    value = element.value
+                }
+            }
+
+            let header = document.getElementById("header")
+            header.style.color = value
+        })
+
+        let range = document.getElementById("font-size")
+        range.addEventListener("change", function () {
+            console.log("change!", range.value)
+
+            let size = document.getElementById("size")
+            size.innerHTML = `${range.value}px`
+
+            let p = document.getElementsByTagName("p")[0] // HTML Collections []
+            p.style.fontSize = `${range.value}px`
+        })
+    </script>
+</html>

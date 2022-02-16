@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List Manipulation</title>
+    </head>
+    <body>
+        <h1>Task List</h1>
+        <p>input your new task list</p>
+        <input type="text" placeholder="todo..." id="task"/>
+        <button onclick="add()">Add</button>
+
+        <ul id="list"></ul>
+    </body>
+    <script>
+        let tasks = ["Eat", "Sleep", "Code"]
+        let ul = document.getElementById("list")
+        let input = document.getElementById("task")
+        console.log(tasks)
+        
+        function showList () {
+            let list = ""
+            for (let i = 0; i < tasks.length; i++) {
+                list += `<li>
+                    ${tasks[i]}
+                    <button>Move Down</button>
+                    <button onclick="remove(${i})">delete</button>
+                </li>`
+            }
+
+            ul.innerHTML = list
+        }
+
+        showList() // running 1x
+
+        function add () {
+            if (!input.value) return
+
+            tasks.push(input.value)
+            console.log(tasks)
+            
+            showList()
+            input.value = ""
+        }
+
+        function remove (index) {
+            tasks.splice(index, 1)
+            console.log(tasks)
+
+            showList()
+        }
+
+    </script>
+</html>
