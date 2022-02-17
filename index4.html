@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HTML Table</title>
+        <style>
+            th, td {
+                border: 1px solid black;
+                padding: 5px 10px;
+            }
+            table {
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Student List</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Program</th>
+                    <th>Batch</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+            <tfoot>
+                <tr>
+                    <td>#</td>
+                    <td></td>
+                    <td>
+                        <input id="name" type="text" placeholder="ex. Dr Strange..."/>
+                    </td>
+                    <td>
+                        <select name="program" id="program">
+                            <option value="JCWD">JCWD</option>
+                            <option value="JCDS">JCDS</option>
+                            <option value="JCDM">JCDM</option>
+                            <option value="JCUIUX">JCUIUX</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input id="batch" type="text" placeholder="0503..."/>
+                    </td>
+                    <td>
+                        <button onclick="submit()">Submit</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+    <script>
+        // raw database
+        let students = [
+            { id : "JCWD0101", name : "Kevin H.O.", program : "JCWD", batch : "0501" },
+            { id : "JCDS0102", name : "Alfon", program : "JCDS", batch : "0302" },
+            { id : "JCDM0103", name : "Dr. Steven", program : "JCDM", batch : "0203" },
+            { id : "JCWD0104", name : "Rudeus", program : "JCWD", batch : "0502" }
+        ]
+
+        // get element
+        let tbody = document.getElementById("tbody")
+
+        // generate rows
+        function showTableList () {
+            let tr = ""
+            for (let i = 0; i < students.length; i++) {
+                tr += 
+                `<tr>
+                    <td>${i + 1}</td>
+                    <td>${students[i].id}</td>
+                    <td>${students[i].name}</td>
+                    <td>${students[i].program}</td>
+                    <td>${students[i].batch}</td>
+                    <td>
+                        <button>edit</button>
+                        <button>delete</button>
+                    </td>
+                </tr>`
+            }
+
+            tbody.innerHTML = tr
+        }
+
+        showTableList()
+
+        function submit () {
+            let name = document.getElementById("name")
+            let program = document.getElementById("program").value
+            let batch = document.getElementById("batch")
+
+            // check value or do validation
+            if (name.value === "" || batch.value === "") return
+
+            // add new data
+            students.push({
+                id : program + Date.now().toString().substring(9),
+                name : name.value,
+                program,
+                batch : batch.value
+            })
+
+            // re-dsiplay element tbody
+            showTableList()
+
+            // reset value input
+            name.value = ""
+            batch.value = ""
+        }
+    </script>
+</html>

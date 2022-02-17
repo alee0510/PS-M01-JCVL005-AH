@@ -23,11 +23,28 @@
         function showList () {
             let list = ""
             for (let i = 0; i < tasks.length; i++) {
-                list += `<li>
-                    ${tasks[i]}
-                    <button>Move Down</button>
-                    <button onclick="remove(${i})">delete</button>
-                </li>`
+                if (i === tasks.length - 1) {
+                    list += `<li>
+                        ${tasks[i]}
+                        <button onclick="moveDown(${i})" disabled>Move Down</button>
+                        <button onclick="moveUp(${i})">Move Up</button>
+                        <button onclick="remove(${i})">delete</button>
+                    </li>`
+                } else if (i === 0) {
+                    list += `<li>
+                        ${tasks[i]}
+                        <button onclick="moveDown(${i})">Move Down</button>
+                        <button onclick="moveUp(${i})" disabled>Move Up</button>
+                        <button onclick="remove(${i})">delete</button>
+                    </li>`
+                } else {
+                    list += `<li>
+                        ${tasks[i]}
+                        <button onclick="moveDown(${i})">Move Down</button>
+                        <button onclick="moveUp(${i})">Move Up</button>
+                        <button onclick="remove(${i})">delete</button>
+                    </li>`
+                }
             }
 
             ul.innerHTML = list
@@ -48,6 +65,22 @@
         function remove (index) {
             tasks.splice(index, 1)
             console.log(tasks)
+
+            showList()
+        }
+
+        function moveDown (index) {
+            let temp = tasks[index + 1]
+            tasks[index + 1] = tasks[index]
+            tasks[index] = temp
+
+            showList()
+        }
+
+        function moveUp (index) {
+            let temp = tasks[index - 1]
+            tasks[index - 1] = tasks[index]
+            tasks[index] = temp
 
             showList()
         }
