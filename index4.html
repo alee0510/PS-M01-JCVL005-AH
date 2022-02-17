@@ -64,6 +64,9 @@
             { id : "JCWD0104", name : "Rudeus", program : "JCWD", batch : "0502" }
         ]
 
+        // variables
+        let indx = null
+
         // get element
         let tbody = document.getElementById("tbody")
 
@@ -71,18 +74,44 @@
         function showTableList () {
             let tr = ""
             for (let i = 0; i < students.length; i++) {
-                tr += 
-                `<tr>
-                    <td>${i + 1}</td>
-                    <td>${students[i].id}</td>
-                    <td>${students[i].name}</td>
-                    <td>${students[i].program}</td>
-                    <td>${students[i].batch}</td>
-                    <td>
-                        <button>edit</button>
-                        <button>delete</button>
-                    </td>
-                </tr>`
+                if (i === indx) {
+                    tr += 
+                    `<tr>
+                        <td>${i + 1}</td>
+                        <td>${students[i].id}</td>
+                        <td>
+                            <input id="edit-name" type="text" value="${students[i].name}"/>
+                        </td>
+                        <td>
+                            <select name="program" id="edit-program">
+                                <option value="JCWD">JCWD</option>
+                                <option value="JCDS">JCDS</option>
+                                <option value="JCDM">JCDM</option>
+                                <option value="JCUIUX">JCUIUX</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input id="edit-batch" type="text" value="${students[i].batch}"/>
+                        </td>
+                        <td>
+                            <button onclick="save()">✔️</button>
+                            <button onclick="cancel()">❌</button>
+                        </td>
+                    </tr>`
+                } else {
+                    tr += 
+                    `<tr>
+                        <td>${i + 1}</td>
+                        <td>${students[i].id}</td>
+                        <td>${students[i].name}</td>
+                        <td>${students[i].program}</td>
+                        <td>${students[i].batch}</td>
+                        <td>
+                            <button onclick="edit(${i})">edit</button>
+                            <button onclick="remove(${i})">delete</button>
+                        </td>
+                    </tr>`
+                }
             }
 
             tbody.innerHTML = tr
@@ -112,6 +141,43 @@
             // reset value input
             name.value = ""
             batch.value = ""
+        }
+
+        function remove(index) {
+            students.splice(index, 1)
+
+            showTableList()
+        }
+
+        function edit(index) {
+            indx = index
+
+            showTableList()
+        }
+
+        function cancel() {
+            indx = null
+            
+            showTableList()
+        }
+
+        function save() {
+            let name = document.getElementById("edit-name").value
+            let program = document.getElementById("edit-program").value
+            let batch = document.getElementById("edit-batch").value
+
+            if (name === "" || batch === "") return
+
+            students[indx] = {
+                id : students[indx].id,
+                name,
+                program,
+                batch
+            }
+
+            indx = null
+
+            showTableList()
         }
     </script>
 </html>
